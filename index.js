@@ -1,28 +1,17 @@
-function numIslands(grid) {
-  if (grid.length === 0) return 0;
-  let count = 0;
-  for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < grid[0].length; j++) {
-      if (grid[i][j] === "1") {
-        dfs(grid, i, j);
-        count++;
-      }
+function allPathsSourceTarget(graph) {
+  const result = [];
+  const target = graph.length - 1;
+  dfs(graph, 0, [0]);
+  function dfs(graph, node, path) {
+    if (node === target) {
+      result.push([...path]);
+      return;
+    }
+    for (const neighbor of graph[node]) {
+      path.push(neighbor);
+      dfs(graph, neighbor, path);
+      path.pop();
     }
   }
-  return count;
-}
-function dfs(grid, i, j) {
-  if (
-    i < 0 ||
-    i >= grid.length ||
-    j < 0 ||
-    j >= grid[0].length ||
-    grid[i][j] === "0"
-  )
-    return;
-  grid[i][j] = "0";
-  dfs(grid, i + 1, j);
-  dfs(grid, i - 1, j);
-  dfs(grid, i, j + 1);
-  dfs(grid, i, j - 1);
+  return result;
 }
