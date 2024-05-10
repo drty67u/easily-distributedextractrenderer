@@ -1,17 +1,14 @@
-function allPathsSourceTarget(graph) {
-  const result = [];
-  const target = graph.length - 1;
-  dfs(graph, 0, [0]);
-  function dfs(graph, node, path) {
-    if (node === target) {
-      result.push([...path]);
-      return;
-    }
-    for (const neighbor of graph[node]) {
-      path.push(neighbor);
-      dfs(graph, neighbor, path);
-      path.pop();
+function maxEnvelopes(envelopes) {
+  envelopes.sort((a, b) => a[0] - b[0] || b[1] - a[1]);
+  const dp = new Array(envelopes.length).fill(1);
+  let max = 1;
+  for (let i = 1; i < envelopes.length; i++) {
+    for (let j = 0; j < i; j++) {
+      if (envelopes[i][1] > envelopes[j][1]) {
+        dp[i] = Math.max(dp[i], dp[j] + 1);
+        max = Math.max(max, dp[i]);
+      }
     }
   }
-  return result;
+  return max;
 }
