@@ -1,13 +1,14 @@
-function canPartition(nums) {
-  const sum = nums.reduce((acc, val) => acc + val, 0);
-  if (sum % 2 !== 0) return false;
-  const target = sum / 2;
-  const dp = new Array(target + 1).fill(false);
-  dp[0] = true;
-  for (const num of nums) {
-    for (let i = target; i >= num; i--) {
-      dp[i] = dp[i] || dp[i - num];
-    }
-  }
-  return dp[target];
-}
+const senderSignature = aptos.transaction.sign({ signer: alice, transaction });
+
+// Sponsor signs
+const sponsorSignature = aptos.transaction.signAsFeePayer({
+  signer: sponsor,
+  transaction,
+});
+
+// Submit the transaction to chain
+const committedTxn = await aptos.transaction.submit.simple({
+  transaction,
+  senderAuthenticator: senderSignature,
+  feePayerAuthenticator: sponsorSignature,
+});
