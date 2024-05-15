@@ -1,23 +1,22 @@
-function zigzagLevelOrder(root) {
-  if (!root) return [];
-  const result = [];
-  let isReverse = false;
-  const queue = [root];
-  while (queue.length) {
-    const size = queue.length;
-    const level = [];
-    for (let i = 0; i < size; i++) {
-      const node = queue.shift();
-      if (isReverse) {
-        level.unshift(node.val);
-      } else {
-        level.push(node.val);
-      }
-      if (node.left) queue.push(node.left);
-      if (node.right) queue.push(node.right);
-    }
-    result.push(level);
-    isReverse = !isReverse;
-  }
-  return result;
+function minStack() {
+  this.stack = [];
+  this.minStack = [];
 }
+minStack.prototype.push = function (x) {
+  this.stack.push(x);
+  if (
+    this.minStack.length === 0 ||
+    x <= this.minStack[this.minStack.length - 1]
+  )
+    this.minStack.push(x);
+};
+minStack.prototype.pop = function () {
+  if (this.stack.pop() === this.minStack[this.minStack.length - 1])
+    this.minStack.pop();
+};
+minStack.prototype.top = function () {
+  return this.stack[this.stack.length - 1];
+};
+minStack.prototype.getMin = function () {
+  return this.minStack[this.minStack.length - 1];
+};
